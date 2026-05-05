@@ -9,17 +9,18 @@ import {MenuItem} from "@/type";
 
 
 // creates and exports appwrite api configuration
+// !! USE YOUR OWN appwriteConfig here 
 export const appwriteConfig = {
     endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT!,
     projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!,
-    platform: "com.jsm.foodordering",
-    databaseId: "69f86216001b1a868967",
-    bucketId: "69f9c86000142580a5e2",
-    userCollectionId: "user",
-    categoriesCollectionId: "categories",
-    menuCollectionId: "menu",
-    customizationsCollectionId: "customizations",
-    menuCustomizationsCollectionId: "menu_customizations"
+    platform: 
+    databaseId:
+    bucketId: 
+    userCollectionId: 
+    categoriesCollectionId: 
+    menuCollectionId: 
+    customizationsCollectionId: 
+    menuCustomizationsCollectionId: 
 
 }
 
