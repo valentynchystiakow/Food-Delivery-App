@@ -1,35 +1,100 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+// imports libraries
+import React from 'react'
+import {Redirect, Slot, Tabs} from 'expo-router'
 
-import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+// imports components
+import {Image, Text, View} from "react-native";
 
+// imports custom hook(store)
+import useAuthStore from "@/store/auth.store";
+
+// imports assets
+import {images} from "@/constants";
+
+// imports libraries
+import cn from 'clsx';
+
+// imports types
+import {TabBarIconProps} from "@/type";
+
+// creates TabBarIcon component
+const TabBarIcon = ({ focused, icon, title }: TabBarIconProps) => (
+    <View className="tab-icon">
+        {/* Tab icon*/}
+        <Image source={icon} className="size-7" resizeMode="contain" tintColor={focused ? '#FE8C00' : '#5D5F6D'} />
+        {/* Tab title*/}
+        <Text className={cn('text-xs font-bold', focused ? 'text-primary':'text-gray-200')}>
+            {title}
+        </Text>
+    </View>
+)
+
+
+
+// creates and exports tabs _Layout component
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
 
-  return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+    // defines user authentication state using useAuthStore hook
+    const {isAuthenticated} = useAuthStore();
+
+    // redirects to a login page if a user is not authenticated
+    if(!isAuthenticated) return <Redirect href="/sign-in"/>
+
+    // uses a Tabs component to display a tab navigator for screens
+    return  <Tabs screenOptions={{
         headerShown: false,
-        tabBarButton: HapticTab,
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-        }}
-      />
+        tabBarShowLabel: false,
+        tabBarStyle: {
+            borderTopLeftRadius: 50,
+            borderTopRightRadius: 50,
+            borderBottomLeftRadius: 50,
+            borderBottomRightRadius: 50,
+            marginHorizontal: 20,
+            paddingTop: 20,
+            paddingBottom: 20,
+            height: 80,
+            position: 'absolute',
+            bottom: 40,
+            backgroundColor: 'white',
+            shadowColor: '#1a1a1a',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.1,
+            shadowRadius: 4,
+            elevation: 5
+        }
+    }}>
+
+        {/* Home screen tab*/}
+        <Tabs.Screen
+            name='index'
+            options={{
+                title: 'Home',
+                tabBarIcon: ({ focused }) => <TabBarIcon title="Home" icon={images.home} focused={focused} />
+            }}
+        />
+        {/* Search screen tab*/}
+        <Tabs.Screen
+            name='search'
+            options={{
+                title: 'Search',
+                tabBarIcon: ({ focused }) => <TabBarIcon title="Search" icon={images.search} focused={focused} />
+            }}
+        />
+        {/* Cart screen tab*/}
+        <Tabs.Screen
+            name='cart'
+            options={{
+                title: 'Cart',
+                tabBarIcon: ({ focused }) => <TabBarIcon title="Cart" icon={images.bag} focused={focused} />
+            }}
+        />
+        {/* Profile screen tab*/}
+        <Tabs.Screen
+            name='profile'
+            options={{
+                title: 'Profile',
+                tabBarIcon: ({ focused }) => <TabBarIcon title="Profile" icon={images.person} focused={focused} />
+            }}
+        />
     </Tabs>
-  );
 }
